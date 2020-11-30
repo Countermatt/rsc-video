@@ -20,7 +20,9 @@
     <section id="intro" class="main-container m-3 p-3 bg-light">
       <h3 class="d-flex justify-content-center" > I.  Introduction: </h3>
         <h5 class="d-flex justify-content-start" style=" padding:20px;"> 1.  Histoire de MPEG DASH: </h5>
-
+          Le Moving Picture Expert Group, plus connu sous son acronyme MPEG, a commencé la conception du MPEG-DASH en 2010. Le DASH (Dynamic Adaptive Streaming over HTTP) est ensuite devenu un standard international à la fin de l’année 2011. C’est d’ailleurs la seule solution de streaming certifiée ISO.
+          Utilisé lui aussi par de très grandes plateformes comme Youtube ou Netflix, le DASH est assez semblable au HLS dans son fonctionnement général : des fichiers séquencés répertoriés dans un fichier servant de playlist.
+          Le DASH, en plus d’être normalisé et standardisé ISO, dispose de plusieurs fonctionnalités introuvables dans les autres technologies similaires, au prix d’une complexité un peu plus élevée.
         <h5 class="d-flex justify-content-start" style=" padding:20px;"> 2.  Amélioration et mise à jour:</h5>
 
         <h5 class="d-flex justify-content-start" style=" padding:20px;"> 3.  Standardisation</h5>
@@ -31,7 +33,33 @@
       <div class="text-center">
           <img src="general.jpg" alt="general" class="w-100">
       </div>
-      Ce schéma étant géneral pour les deux modes de fonctionnement <strong>Video on demand </strong> et <strong>live video</strong>, Dans les diagrammes suivants on détaillera la différence au niveau du diagramme de séquence des deux modes.
+      <p>
+        Nous avons donc ici du XML classique, chaque tag donnant des informations spécifiques. Voyons ensemble les tag principaux par ordre hiérarchique :
+      </p>
+      <ul>
+        <li>
+          <code> MPD : </code>
+            Décrit les métadata du fichier, sa version, la version du DASH utilisée, la durée total du contenu…
+        </li>
+        <li>
+          <code> AdaptationSet : </code>
+            Une adaptation est l’un des éléments du contenu, pas exemple la vidéo ou l’audio.        </li>
+        <li>
+          <code> ContentComponent : </code>
+De manière assez similaire au tag précédent, le ContentComponent décrit exactement le type d’adaptation.        </li>
+        <li>
+          <code> Representation : </code>
+            La représentation décrit une version spécifique du contenu séquencé. Elle dispose d’un encodage qui lui est propre et c’est cet elément qui est utilisé par l’adaptive streaming, décrit dans la partie dédiée au HLS.
+        </li>
+        <li>
+          <code> BaseURL : </code>
+L’URL de la séquence.        </li>
+
+      </ul>
+      <p>
+        le DASH supporte les DRM, pour diffuser du contenu protégé. Il permet aussi d’utiliser n’importe quel codec audio/vidéo, ce qui le rend particulièrement adaptable.
+        Ce schéma étant géneral pour les deux modes de fonctionnement <strong>Video on demand </strong> et <strong>live video</strong>, Dans les diagrammes suivants on détaillera la différence au niveau du diagramme de séquence des deux modes.
+      </p>
       <h5 class="d-flex justify-content-start" style=" padding:20px;" >1. Description du Protocole pour VOD</h5>
       <div class="text-center">
           <img src="vod.jpg" alt="vod" width="600" height="600">
@@ -51,7 +79,11 @@
 
     <section id="ref" class="main-container m-3 p-3 bg-light">
       <h3 class="d-flex justify-content-center" >VI. Référence</h3>
-
+      <ul>
+          <li>
+              LES PRINCIPAUX FORMATS DE FLUX VIDEO LIVE DASH, publié le 19/07/2019, auteur : Jérémy Bernard
+          </li>
+      </ul>
 
 
 
