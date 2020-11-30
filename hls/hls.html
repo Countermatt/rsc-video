@@ -1,0 +1,199 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
+
+    <title>HLS</title>
+  </head>
+  <body width: 100%">
+    <h1 class="d-flex justify-content-center">Welcome to our demo for HLS</h1>
+    <br><br>
+    <h3 class="d-flex justify-content-center" > I.  Introduction: </h3>
+    <h5 class="d-flex justify-content-start" style=" padding:20px;"> 1.  Histoire de HLS: </h5>
+      <div> 
+        HLS signifie HTTP Live Streaming. HLS est un protocole de diffusion multimédia permettant de diffuser de la vidéo  en direct ou à la demande.
+        HLS fonctionne sur  HTTP et utilise TCP comme protocole de transport.
+        Avec HLS, le client est responsable de la demande de la liste de lecture appropriée en fonction des conditions actuelles du réseau et du matériel du client.
+        Apple a lancé pour la première fois le protocole HTTP Live Streaming (HLS) en 2009.
+        Avant la sortie de HLS, Apple utilisait le serveur de streaming Quicktime.
+        Quicktime utilisait des ports non standard pour le transfert de données et les pare-feu bloquaient donc généralement les flux. HLS a été conçu pour corriger les erreurs de Quicktime et ainsi pouvoir être utilisable par tout type de matériel.
+      </div>
+
+    <h5 class="d-flex justify-content-start" style=" padding:20px;"> 2.  Standardisation</h5>
+      <div>
+        Suite à l'essor de protocoles propriétaires de streaming vidéo vers la période 2008-2010 (HLS, Microsoft Smooth Streaming, Adobe HTTP Dynbamic Streaming), la nécessité de standardiser les protocoles s'est manifestée.
+        Ainsi, Adobe, Microsoft et Apple ont coopéré pour mettre en place le protocole MPEG-DASH, qui sera standardisé par la norme ISO/IEC 23009-1:2012 en 2012.
+        Néanmoins, Apple a tout de même voulu maintenir l'usage de son protocole HLS.
+        En effet, Apple avait déjà soumis dès 2009 sa solution à l' Internet Engineering Task Force (IETF), en vue de standardiser le protocole HLS par un Request For Comment (RFC). C'est chose faite en 2017 : le RFC 8216 décrit la version 7 du protocole.
+        Un certain nombre de solutions propriétaires et Open Source existent aujourd'hui à la fois pour l'implémentation du serveur (segmenteur) et pour le lecteur client.
+        Citons par exemple la librairie Javascript open Source hls.js en Javascript pour implémenter client HLS.
+      </div>
+      <br><br>
+
+    <h3 class="d-flex justify-content-center" >II. Description du Protocole:</h3>
+    <br><br>
+
+    <img src="images/SchemaHLS.png" alt="" />
+
+    <div class="d-flex justify-content-center" >
+    <img src="images/PrecisionsSchema.png" alt="" />
+    </div>
+    <br><br>
+      <div> 
+        Le schéma ci-dessus explique brièvement le fonctionnement global du protocole HLS. Y figurent 3 composantes: le serveur, le CDN et le client.
+        Nous allons expliquer le fonctionnement de HLS dans un premier temps pour le cas de la vidéo à la demande (VOD), puis nous expliquerons ce qui est différent dans le cas du direct (Live).
+      </div>
+
+      <br><br>
+
+    <h5 class="d-flex justify-content-start" >2. Description du Protocole pour VOD</h5>
+    
+      <br><br>
+
+    <h6> Etape 1 : Encodage </h6>
+      <br>
+      <div>  
+        Le fichier vidéo brut est envoyé au serveur. Celui-ci réalise alors un encodage du fichier brut : cela permet d’obtenir des petits fragments de la vidéo originelle appelés segments. Ces segments, une fois rassemblés, permettent de reconstituer la vidéo en entier, et ce dans différentes qualités : 360p, 720p, 1080p …
+        Ainsi, pour chaque intervalle de temps donné dans la vidéo, il y a plusieurs segments, qui correspondent aux différentes qualités. C’est l’existence des segments de qualités différentes qui explique que l’utilisateur final peut passer d’une qualité à une autre alors qu’il est en train de lire une vidéo.
+      </div>
+      <br>
+<h6> Etape 2 : Création des Playlists </h6>
+    <br>
+    <div> 
+      Une Playlist est un fichier texte d’extension .m3u8 dans lequel sont recensés les URL vers les tous segments d’une vidéo correspondant à une qualité donnée. Les URL sont recensées conformément à l’ordre chronologique de la vidéo.
+      Une Playlist correspond donc à une vidéo et à une qualité donnée, c’est-à-dire que pour une vidéo traitée par le serveur, il y a autant de playlists créées que de qualités proposées.
+      Une Master Playlist (ou Index) est également créée pour chaque vidéo : c’est une Playlist de Playlist, c’est-à-dire un fichier .m3u8 qui recense les URL vers chacune des Playlist correspondant à une qualité de la vidéo.
+      C’est tout pour la partie serveur. Les segments et les Playlist que le serveur a créé sont conservés par celui-ci.
+      Les fichiers demandés par le client lui seront alors envoyés par la suite.
+    </div>
+    <br>
+<h6> Etape 3 : Distribution des fichiers du serveur HLS vers le client </h6>
+    <br>
+    <div>
+      Les fichiers demandés par le client lui sont transmis par le serveur. Ils transitent alors par un réseau de serveurs dispersés géographiquement, puis arrivent à l’utilisateur final. Ce réseau de serveur est appelé Content Delivery Network (CDN)*.
+      Si de nombreux utilisateurs provenant d’une même zone demandent les mêmes fichiers vidéo, le CDN va répliquer les fichiers du serveur HLS d’origine dans le serveur le plus proche possible de cette zone de sollicitation importante. Cela va permettre à l’information d’être disponible au plus proche de certains utilisateurs, de soulager la charge du serveur d’origine, et d’optimiser les temps de téléchargement.
+    </div>
+    <br>
+    <div>
+      *En fait, le CDN comprend,en plus des serveurs relais dispersés géographiquement, les serveurs d’où l’information provient, tels que le serveur HLS. Sur le schéma, le serveur HLS est séparé du CDN par souci de clarté, mais par définition du CDN, il en fait aussi partie.
+    </div>
+    <br>
+    <h6> Etape 4 : Requêtes côté client. </h6>
+      <div>
+        Les requêtes du client vers le serveur, ainsi que les réponses du serveur, sont indiquées dans le schéma ci-dessous. Nous allons expliquer en détail ces échanges.
+      </div>
+
+      <br><br>
+
+      <div class="d-flex justify-content-center" >
+      <img src="images/diagExchangeVOD.png" alt="" />
+      </div>
+
+      <br><br><br><br>
+      
+      <div>
+        Le premier fichier que reçoit le client est la Master Playlist ou Index. Une fois ce fichier reçu, le client va évaluer son débit, puis il va faire une requête au serveur pour demander au serveur la Playlist qui correspond à la meilleure qualité de vidéo que sa bande passante peut accueillir.
+        Une fois qu’il reçoit la Playlist de la qualité souhaitée, le client peut commencer à télécharger les segments un à un afin de pouvoir lire la vidéo.
+        Lors de la lecture des segments déjà téléchargés, le client continue d’évaluer régulièrement sa bande passante. Au cas où une baisse de débit causerait une interruption de la vidéo, le client va demander au serveur, si elle existe, la Playlist correspondant à une qualité inférieure à celle qu’il possède déjà, mais qui reste optimale vis-à-vis de son nouveau débit.
+        Une fois la nouvelle Playlist obtenue, le client pourra à nouveau télécharger les segments de la vidéo, en téléchargeant les segments qui succèdent chronologiquement à ceux déjà téléchargés.
+        A contrario, si le débit du client s’améliore et que sa bande passante est adaptée à une qualité de vidéo supérieure, le client va demander auprès du serveur une meilleure qualité, pour pouvoir ensuite télécharger des segments qui correspondent à une meilleure qualité vidéo.
+      </div>
+      <br><br>
+
+
+
+    <h5 class="d-flex justify-content-start" >2. Description du Protocole pour Live</h5>
+    <br><br>
+    <div>
+      Le fonctionnement général de HLS est globalement le même dans le cas de la VOD et du Live.
+      Le seul changement réside au niveau des segments et des Playlists correspondant à chaque qualité : en effet, les segments sont créés au fur et à mesure que la vidéo est enregistrée, et les Playlists correspondantes sont également mises à jour au fur et à mesure.
+      Ainsi, comme c’est indiqué dans le diagramme d’échange ci-dessous, le client doit de son côté demander avant de télécharger chaque segment la Playlist mise à jour, afin de prendre connaissance des URLs des nouveaux segments créés.
+      
+      <br><br><br><br>
+      <div class="d-flex justify-content-center" >
+      <img src="images/diagExchangeLive.png" alt="" />
+      </div>
+    </div>
+
+    <br><br><br><br><br><br>
+  
+
+
+    <h3 class="d-flex justify-content-center" >IV. Avantages et inconvénients du protocole</h3>
+    <br><br>
+      <div>
+        La mise en place du protocole HLS a permis de corriger les erreurs de l’ancien serveur de streaming Quicktime concernant l’utilisation de ports statiques mais son fonctionnement provoque de la latence dû aux délais d’envoi de requêtes et réception des segments. Cet inconvénient est d’autant plus flagrant lors de la diffusion en direct ou les délais peuvent atteindre 30 secondes.
+        De plus, les segments sont en général d’une longueur de 10 secondes ainsi en cas de problèmes réseau, le client HLS n’est pas capable de demander une qualité plus basse immédiatement. On peut citer le protocole MPEG-DASH qui propose des segments de taille variable entre 2 et 4 secondes et ainsi qui réagit plus rapidement au réseau du client.
+        D’un point de vue avantages du protocole , les segments sont chiffrés à l’aide de l’algorithme AES. De plus, avec le protocole HLS, il est uniquement possible de demander de la vidéo au serveur. Le protocole HLS ne fonctionne que dans un sens unique, le client ne peut pas envoyer une vidéo vers le serveur. Ainsi la conférence est impossible à mettre en place avec HLS.
+        La résolution de la vidéo dépend de la qualité de réseau du client, le client sélectionne la qualité la plus appropriée à son réseau afin d'éviter les coupures.
+        Mais l’un des gros avantages réside dans le fait de pouvoir diffuser de la vidéo depuis tous types de serveurs (HTTP,Apache,nginx).
+      </div>
+      <br><br><br><br>
+
+      
+    <h3 class="d-flex justify-content-center" >V. Demonstration</h3>
+
+      <br><br>
+
+      <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
+      <div class="d-flex justify-content-center">
+          <video class="d-flex justify-content-center" id="player" muted =true style="width: 900px; height: 507px;" controls></video>
+          <script>
+              var video = document.getElementById('player');
+              var hls = new Hls();
+              hls.loadSource('playlist.m3u8');
+              hls.attachMedia(video);
+              hls.on(Hls.Events.MANIFEST_PARSED,function() {
+                  video.play();
+              });
+          </script>
+      </div>
+      <br><br><br><br>
+
+
+    <h3 class="d-flex justify-content-center" >VI. How To</h3>
+      <br><br>
+      
+      <div class="d-flex justify-content-center">
+      <iframe src="how_to.pdf" width=1000 height=600>
+        This browser does not support PDFs. Please download the PDF to view it: Download PDF
+        </iframe>
+      </div>
+      
+      <br><br><br><br>
+
+
+
+    <h3 class="d-flex justify-content-center" >VII. Références </h3>
+
+    <br><br><br><br>
+
+    <h4> RFC </h4>
+      <a href="https://tools.ietf.org/html/rfc8216#page-4"> https://tools.ietf.org/html/rfc8216#page-4 </a>
+    <h4> Site Apple </h4>
+      <a href="https://developer.apple.com/streaming/"> https://developer.apple.com/streaming/ </a>
+      <a href="https://developer.apple.com/streaming/"> https://developer.apple.com/streaming/ </a>
+    <h4> Histoire de HLS </h4>
+      <a href="https://www.wowza.com/blog/mpeg-dash-dynamic-adaptive-streaming-over-http"> https://www.wowza.com/blog/mpeg-dash-dynamic-adaptive-streaming-over-http </a>
+      <a href="https://datatracker.ietf.org/doc/draft-pantos-http-live-streaming/history/"> https://datatracker.ietf.org/doc/draft-pantos-http-live-streaming/history/ </a>
+    <h4> Sites d'informations et aide pour les schémas</h4>
+      <a href="https://blog.eleven-labs.com/fr/video-live-dash-hls/"> https://blog.eleven-labs.com/fr/video-live-dash-hls/ </a>
+      <a href="https://www.viinex.com/hls-protocol-in-video-surveillance-how-it-works-with-viinex/"> https://www.viinex.com/hls-protocol-in-video-surveillance-how-it-works-with-viinex/ </a>
+      <a href="https://www.synopi.com/hls-http-live-streaming/"> https://www.synopi.com/hls-http-live-streaming/ </a>
+    <h4> Serveur HLS </h4>
+      <a href="https://github.com/t-mullen/hls-server"> https://github.com/t-mullen/hls-server </a>
+    <h4> Client HLS </h4>
+      <a href="https://github.com/video-dev/hls.js/"> https://github.com/video-dev/hls.js/</a>
+
+    <br><br><br>
+
+
+
+
+  </body>
+</html>
