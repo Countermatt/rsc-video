@@ -21,11 +21,22 @@
       <h3 class="d-flex justify-content-center" > I.  Introduction: </h3>
         <h5 class="d-flex justify-content-start" style=" padding:20px;"> 1.  Histoire de MPEG DASH: </h5>
           Le Moving Picture Expert Group, plus connu sous son acronyme MPEG, a commencé la conception du MPEG-DASH en 2010.
-          Utilisé par de très grandes plateformes comme Youtube ou Netflix, le DASH est assez semblable au HLS dans son fonctionnement général : des fichiers séquencés répertoriés dans un fichier servant de playlist.
-          La diffusion de contenu vidéo et audio via Internet a commencé à la fin des années 90, lorsque la vitesse d'Internet à l'époque ressemblait à celle d'un escargot. Microsoft avait son lecteur multimédia et ses normes (et protocoles), et Flash a fait une entrée via Macromedia. Bientôt Macromedia a été consommé par Adobe. Au début, tout le contenu vidéo et audio devait être complètement téléchargé avant d'être visionné. Cela a été exigé en raison des limitations de vitesse Internet et également en raison de processeurs à l'ancienne plus lents et cadencés par MegaHertz. Au fur et à mesure que l'Internet devenait plus robuste, le streaming devenait lentement plus réalisable ; l'industrie de la vidéo a présenté ses rendus haute définition (HD) - dans le monde «réel», la lutte était engagée à travers les disques DVD et Blue-Ray pour contenir des copies plus nettes et plus profondes d'un même film - et ainsi l'industrie Internet a accepté " segmenter les canaux vidéo, audio et texte et les diffuser via HTTP en tant que protocole de transport. Cependant, Microsoft a sorti son Silverlight et Apple ses normes HLS. Adobe a produit sa technologie HDS. À cette époque, en 2009, l'industrie du streaming de contenu ressentait le besoin de fusionner tous les formats existants en une seule entité et MPEG DASH était né. MPEG DASH était un outil de diffusion et non un CODEC ou une technologie.
+          Utilisé par de très grandes plateformes comme Youtube ou Netflix, le DASH est assez semblable au HLS dans
+          son fonctionnement général : des fichiers séquencés répertoriés dans un fichier servant de playlist.
+          La diffusion de contenu vidéo et audio via Internet a commencé à la fin des années 90, lorsque la vitesse
+          d'Internet à l'époque ressemblait à celle d'un escargot. Microsoft avait son lecteur multimédia et ses normes (et protocoles),
+          et Flash a fait une entrée via Macromedia. Bientôt Macromedia a été consommé par Adobe. Au début, tout le contenu vidéo
+          et audio devait être complètement téléchargé avant d'être visionné. Cela a été exigé en raison des limitations de vitesse
+          Internet et également en raison de processeurs à l'ancienne plus lents et cadencés par MegaHertz. Au fur et à mesure que
+          l'Internet devenait plus robuste, le streaming devenait lentement plus réalisable ; l'industrie de la vidéo a présenté
+           ses rendus haute définition (HD) - dans le monde «réel», la lutte était engagée à travers les disques DVD et
+           Blue-Ray pour contenir des copies plus nettes et plus profondes d'un même film - et ainsi l'industrie Internet a accepté " segmenter les canaux vidéo,
+           audio et texte et les diffuser via HTTP en tant que protocole de transport. Cependant, Microsoft a sorti son Silverlight et Apple ses normes HLS.
+           Adobe a produit sa technologie HDS. À cette époque, en 2009, l'industrie du streaming de contenu ressentait le besoin de fusionner tous les formats existants
+           en une seule entité et MPEG DASH était né. MPEG DASH était un outil de diffusion et non un CODEC ou une technologie.
         <h5 class="d-flex justify-content-start" style=" padding:20px;"> 2.  Standardisation</h5>
-          La technologie MPEG-DASH a été développée sous MPEG. Les travaux sur DASH ont commencé en 2010; il est devenu un projet de norme internationale en janvier 2011
-           et une norme internationale en novembre 2011. La norme MPEG-DASH a été publiée en avril 2012 mais a été révisée en 2019 sous la forme MPEG-DASH ISO / IEC 23009-1: 2019.
+          La technologie MPEG-DASH est devenu un projet de norme internationale
+           en novembre 2011. La norme MPEG-DASH a été publiée en avril 2012 mais a été révisée en 2019 sous la forme MPEG-DASH ISO / IEC 23009-1: 2019.
     <section id="description_vod" class="main-container m-3 p-3 bg-light">
       <h3 class="d-flex justify-content-center" >II. Description du Protocole</h3>
       <p>Le standard de diffusion vidéo MPEG Dash comme dit précedement se base sur la préparation du contenu en différentes présentations de qualité et débit variable, découpées en segments de courte durée (quelques secondes) son fonctionnement général se résume dans le schéma suivant :  </p>
@@ -33,7 +44,7 @@
           <img src="general.jpg" alt="general" class="w-100">
       </div>
       <p>
-        Nous avons donc ici du XML classique, chaque tag donnant des informations spécifiques. Voyons ensemble les tag principaux par ordre hiérarchique :
+        Nous avons donc ici du XML classique, chaque tag donnant des informations spécifiques. Voici les tag principaux par ordre hiérarchique :
       </p>
       <ul>
         <li>
@@ -48,7 +59,8 @@
 De manière assez similaire au tag précédent, le ContentComponent décrit exactement le type d’adaptation.        </li>
         <li>
           <code> Representation : </code>
-            La représentation décrit une version spécifique du contenu séquencé. Elle dispose d’un encodage qui lui est propre et c’est cet elément qui est utilisé par l’adaptive streaming, décrit dans la partie dédiée au HLS.
+            La représentation décrit une version spécifique du contenu séquencé.
+            Elle dispose d’un encodage qui lui est propre et c’est cet elément qui est utilisé par l’adaptive streaming, décrit dans la partie dédiée au HLS.
         </li>
         <li>
           <code> BaseURL : </code>
